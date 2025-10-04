@@ -37,7 +37,7 @@ const Home = ()=>{
           {/* <p className='text-muted-foreground'>You have no interviews yet.</p> */}
           {dummyInterviews.map((interview)=>(
             <InterviewCard key={interview.id}
-                userId={user?.id}
+                // userId={user?.id}
                 interviewId={interview.id}
                 role={interview.role}
                 type={interview.type}
@@ -54,7 +54,7 @@ const Home = ()=>{
           {/* <p className='text-muted-foreground'>You have no interviews yet.</p> */}
           {dummyInterviews.map((interview)=>(
             <InterviewCard key={interview.id}
-                userId={user?.id}
+                // userId={user?.id}
                 interviewId={interview.id}
                 role={interview.role}
                 type={interview.type}

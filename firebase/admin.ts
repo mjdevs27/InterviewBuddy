@@ -3,7 +3,6 @@
 
 // import { get } from "http"
 import { cert, getApps, initializeApp } from "firebase-admin/app"
-// import { initialize } from "next/dist/server/lib/render-server"
 import { getAuth } from "firebase-admin/auth"
 import { getFirestore } from "firebase-admin/firestore"
 
@@ -30,3 +29,5 @@ const initFirebaseAdmin = () => {
     )
 
 }
+
+export const { auth , db } = initFirebaseAdmin()

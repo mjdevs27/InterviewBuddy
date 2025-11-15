@@ -103,5 +103,11 @@ export async function getCurrentUser(): Promise<User | null> {
     console.log(error);
 
     // Invalid or expired session
+  
     return null;
 }}
+
+export async function isAuthenticated() {
+  const user = await getCurrentUser();
+  return !!user;
+}

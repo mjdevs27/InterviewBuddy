@@ -5,6 +5,9 @@ import InterviewCard from '@/components/InterviewCard';
 import DisplayTechIcons from '@/components/DisplayTechIcons';
 import { companies } from '@/constants';
 
+// Force dynamic rendering for this page
+export const dynamic = 'force-dynamic';
+
 async function getRandomInterviews() {
   try {
     const response = await fetch(

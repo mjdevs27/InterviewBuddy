@@ -10,11 +10,16 @@ import { db } from '@/firebase/admin';
 export const dynamic = 'force-dynamic';
 
 async function getRandomInterviews() {
+  // During build time, return empty array
+  if (process.env.NODE_ENV === 'production' && !process.env.VERCEL_ENV) {
+    return [];
+  }
+
   try {
     const snapshot = await db
       .collection('interviews')
       .where('finalized', '==', true)
-      .limit(18) // Get more to filter
+      .limit(18)
       .get();
 
     const interviews = snapshot.docs
@@ -22,8 +27,8 @@ async function getRandomInterviews() {
         id: doc.id,
         ...doc.data(),
       }))
-      .filter((interview: any) => !interview.userId) // Only random interviews
-      .sort(() => Math.random() - 0.5) // Shuffle
+      .filter((interview: any) => !interview.userId)
+      .sort(() => Math.random() - 0.5)
       .slice(0, 6);
 
     return interviews;
@@ -34,8 +39,13 @@ async function getRandomInterviews() {
 }
 
 async function getUserInterviews() {
+  // During build time, return empty array
+  if (process.env.NODE_ENV === 'production' && !process.env.VERCEL_ENV) {
+    return [];
+  }
+
   try {
-    const userId = 'demo-user-123'; // Replace with actual auth
+    const userId = 'demo-user-123';
     const snapshot = await db
       .collection('interviews')
       .where('userId', '==', userId)

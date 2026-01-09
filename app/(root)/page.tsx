@@ -4,18 +4,29 @@ import { Button } from '@/components/ui/button';
 import InterviewCard from '@/components/InterviewCard';
 import DisplayTechIcons from '@/components/DisplayTechIcons';
 import { companies } from '@/constants';
+import { db } from '@/firebase/admin';
 
 // Force dynamic rendering for this page
 export const dynamic = 'force-dynamic';
 
 async function getRandomInterviews() {
   try {
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/api/interviews/random?count=6`,
-      { cache: 'no-store' }
-    );
-    const data = await response.json();
-    return data.success ? data.interviews : [];
+    const snapshot = await db
+      .collection('interviews')
+      .where('finalized', '==', true)
+      .limit(18) // Get more to filter
+      .get();
+
+    const interviews = snapshot.docs
+      .map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }))
+      .filter((interview: any) => !interview.userId) // Only random interviews
+      .sort(() => Math.random() - 0.5) // Shuffle
+      .slice(0, 6);
+
+    return interviews;
   } catch (error) {
     console.error('Error fetching random interviews:', error);
     return [];
@@ -25,12 +36,23 @@ async function getRandomInterviews() {
 async function getUserInterviews() {
   try {
     const userId = 'demo-user-123'; // Replace with actual auth
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/api/interviews/user?userId=${userId}&limit=3`,
-      { cache: 'no-store' }
-    );
-    const data = await response.json();
-    return data.success ? data.interviews : [];
+    const snapshot = await db
+      .collection('interviews')
+      .where('userId', '==', userId)
+      .where('finalized', '==', true)
+      .limit(3)
+      .get();
+
+    const interviews = snapshot.docs
+      .map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }))
+      .sort((a: any, b: any) =>
+        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+      );
+
+    return interviews;
   } catch (error) {
     console.error('Error fetching user interviews:', error);
     return [];

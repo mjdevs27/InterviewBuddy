@@ -1,6 +1,17 @@
 import { CreateAssistantDTO } from "@vapi-ai/web/dist/api";
 import { z } from "zod";
 
+export const companies = [
+  { name: 'Google', color: '#4285F4' },
+  { name: 'Amazon', color: '#FF9900' },
+  { name: 'Meta', color: '#0668E1' },
+  { name: 'Microsoft', color: '#00A4EF' },
+  { name: 'Apple', color: '#555555' },
+  { name: 'Netflix', color: '#E50914' },
+  { name: 'Tesla', color: '#CC0000' },
+  { name: 'Stripe', color: '#635BFF' },
+];
+
 export const mappings = {
   "react.js": "react",
   reactjs: "react",
